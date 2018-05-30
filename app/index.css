@@ -74,3 +74,8 @@ li {
 .nav li {
   margin-right: 15px;
 }
+
+a {
+  text-decoration: none;
+  color: #d0012b;
+}
