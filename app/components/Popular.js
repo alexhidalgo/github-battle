@@ -106,4 +106,4 @@ SelectLanguage.propTypes = {
   onSelect: PropTypes.func.isRequired
 }
 
-module.exports = Popular;
+module.exports = Popular
