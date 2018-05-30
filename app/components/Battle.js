@@ -1,11 +1,36 @@
 let React = require('react')
 
-function Battle () {
-  return (
-    <div>
-      battle
-    </div>
-  )
+class Battle extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      playerOneName: '',
+      playerTwoName: '',
+      playerOneImage: null,
+      playerTwoImage: null
+    }
+
+    this.handleSubmit = this.handleSubmit.bind(this)
+
+    handleSubmit(id, username) {
+      this.setState(function () {
+        let newState = {}
+        newState[id + 'Name'] = username
+        newState[id + 'Image'] = 'https://github.com/' + username + '.png?size=200'
+        return newState
+      })
+    }
+  }
+  render() {
+    return (
+      <div>
+        <div className='row'>
+
+        </div>
+      </div>
+    )
+  }
 }
 
 module.exports = Battle
