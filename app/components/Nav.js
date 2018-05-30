@@ -1,5 +1,4 @@
 let React = require('react')
-//let Link = require('react-router-dom').Link
 let NavLink = require('react-router-dom').NavLink
 
 function Nav () {
