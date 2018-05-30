@@ -15,6 +15,11 @@ li {
     margin: 0 auto;
 }
 
+.row {
+    display: flex;
+    justify-content: space-around;
+}
+
 .languages {
     display: flex;
     justify-content: center;
