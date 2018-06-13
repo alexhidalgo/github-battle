@@ -92,7 +92,7 @@ class Battle extends React.Component {
   // && is a short hand if statement. It requires both statements to be true to render or return
   render () {
     const { playerOneName, playerTwoName, playerOneImage, playerTwoImage } = this.state
-    const match = this.props
+    const { match } = this.props
 
     return (
       <div>
