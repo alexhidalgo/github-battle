@@ -1,9 +1,10 @@
-let React = require('react')
-let queryString = require('query-string')
-let api = require('../utils/api')
-let Link = require('react-router-dom').Link
-let PropTypes = require('prop-types')
-let PlayerPreview = require('./PlayerPreview')
+const React = require('react')
+const queryString = require('query-string')
+const api = require('../utils/api')
+const Link = require('react-router-dom').Link
+const PropTypes = require('prop-types')
+const PlayerPreview = require('./PlayerPreview')
+const Loading = require('./Loading')
 
 function Profile (props) {
   let info = props.info
@@ -81,13 +82,10 @@ class Results extends React.Component {
     })
   }
   render () {
-    let error = this.state.error
-    let winner = this.state.winner
-    let loser = this.state.loser
-    let loading = this.state.loading
+    let {error, winner, loser, loading} = this.state
 
     if (loading === true) {
-      return <p>Loading...</p>
+      return <Loading />
     }
 
     if (error) {

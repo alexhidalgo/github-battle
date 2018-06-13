@@ -1,7 +1,7 @@
-let React = require('react')
-let PropTypes = require('prop-types')
-let Link = require('react-router-dom').Link
-let PlayerPreview = require('./PlayerPreview')
+const React = require('react')
+const PropTypes = require('prop-types')
+const Link = require('react-router-dom').Link
+const PlayerPreview = require('./PlayerPreview')
 
 class PlayerInput extends React.Component {
   constructor (props) {
@@ -21,35 +21,33 @@ class PlayerInput extends React.Component {
     )
   }
   handleChange (event) {
-    let value = event.target.value
-    this.setState(() => {
-      return {
-        username: value
-      }
-    })
+    const value = event.target.value
+    this.setState(() => ({ username: value }))
   }
   // the form has a standard html property called onSubmit which is triggered
   // when the type 'submit' button is triggered. When triggered it calls the function
   // handleSubmit which calls a function that was passed down from the parent
   // called onSubmit. This func updates the state and calls setState.
   render () {
+    const { username } = this.state
+    const { label } = this.props
     return (
       <form className='column' onSubmit={this.handleSubmit}>
         <label className='header' htmlFor='username'>
-          {this.props.label}
+          {label}
         </label>
         <input
           id='username'
           placeholder='github username'
           type='text'
           autoComplete='off'
-          value={this.state.username}
+          value={username}
           onChange={this.handleChange}
         />
         <button
           className='button'
           type='submit'
-          disabled={!this.state.username}>
+          disabled={!username}>
             Submit
         </button>
       </form>
@@ -78,30 +76,23 @@ class Battle extends React.Component {
   }
 
   handleSubmit (id, username) {
-    this.setState(() => {
-      let newState = {}
-      newState[id + 'Name'] = username
-      newState[id + 'Image'] = 'https://github.com/' + username + '.png?size=200'
-      return newState
-    })
+    this.setState(() => ({
+      [id + 'Name']: username,
+      [id + 'Image']: `https://github.com/${username}.png?size=200`
+    }))
   }
 
   handleReset (id) {
-    this.setState(() => {
-      let newState = {}
-      newState[id + 'Name'] = ''
-      newState[id + 'Image'] = null
-      return newState
-    })
+    this.setState(() => ({
+      [id + 'Name']: '',
+      [id + 'Image']: null
+    }))
   }
 
   // && is a short hand if statement. It requires both statements to be true to render or return
   render () {
-    let playerOneName = this.state.playerOneName
-    let playerTwoName = this.state.playerTwoName
-    let playerOneImage = this.state.playerOneImage
-    let playerTwoImage = this.state.playerTwoImage
-    let match = this.props.match
+    const { playerOneName, playerTwoName, playerOneImage, playerTwoImage } = this.state
+    const match = this.props
 
     return (
       <div>
@@ -119,7 +110,7 @@ class Battle extends React.Component {
               username={playerOneName}
             >
               <button className='reset'
-                onClick={this.handleReset.bind(null, 'playerOne')}>
+                onClick={() => { this.handleReset('playerOne') }}>
                 Reset
               </button>
             </PlayerPreview>}
@@ -138,7 +129,7 @@ class Battle extends React.Component {
               id='playerTwo'
             >
               <button className='reset'
-                onClick={this.handleReset.bind(null, 'playerTwo')}>
+                onClick={() => { this.handleReset('playerTwo') }}>
                 Reset
               </button>
             </PlayerPreview>}
@@ -147,9 +138,8 @@ class Battle extends React.Component {
           <Link
             className='button'
             to={{
-              pathname: match.url + '/results',
-              search: `?playerOneName=` + playerOneName + '&playerTwoName=' +
-                playerTwoName
+              pathname: `${match.url}/results`,
+              search: `?playerOneName=${playerOneName}&playerTwoName=${playerTwoName}`
             }}>
             Battle
           </Link>}

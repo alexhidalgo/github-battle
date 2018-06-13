@@ -1,27 +1,27 @@
-var React = require('react');
-var PropTypes = require('prop-types')
-var api = require('../utils/api')
-
+const React = require('react')
+const PropTypes = require('prop-types')
+const api = require('../utils/api')
+const Loading = require('./Loading')
 
 function RepoGrid (props) {
   return (
     <ul className='popular-list'>
       {props.repos.map(function (repo, index) {
         return (
-        <li key={repo.name} className='popular-item'>
-          <div className='popular-rank'>#{index + 1}</div>
-          <ul className='space-list-items'>
-            <li>
-              <img
-                className='avatar'
-                src={repo.owner.avatar_url}
-                alt={'Avatar for ' + repo.owner.login}/>
-            </li>
-            <li><a href={repo.html_url}>{repo.name}</a></li>
-            <li>@{repo.owner.login}</li>
-            <li>{repo.stargazers_count} stars</li>
-          </ul>
-        </li>
+          <li key={repo.name} className='popular-item'>
+            <div className='popular-rank'>#{index + 1}</div>
+            <ul className='space-list-items'>
+              <li>
+                <img
+                  className='avatar'
+                  src={repo.owner.avatar_url}
+                  alt={'Avatar for ' + repo.owner.login} />
+              </li>
+              <li><a href={repo.html_url}>{repo.name}</a></li>
+              <li>@{repo.owner.login}</li>
+              <li>{repo.stargazers_count} stars</li>
+            </ul>
+          </li>
         )
       })}
     </ul>
@@ -35,38 +35,38 @@ RepoGrid.propTypes = {
 // if all your component has is a render method on the react extends class then you can break that out into a function that just returns UI
 // this is a stateless functional component
 function SelectLanguage (props) {
-  var languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python'];
+  var languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python']
   return (
     <ul className='languages'>
-    {languages.map((lang) => {
-      return (
-        <li
-          onClick={props.onSelect.bind(null, lang)}
-          style={lang === props.selectedLanguage ? {color: '#d0021b'}: null}
-          key={lang}>
+      {languages.map((lang) => {
+        return (
+          <li
+            onClick={props.onSelect.bind(null, lang)}
+            style={lang === props.selectedLanguage ? {color: '#d0021b'} : null}
+            key={lang}>
             {lang}
-        </li>
-      )
-    })}
-  </ul>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 
 class Popular extends React.Component {
-    // use when needing to set initial state of component
-    constructor(props) {
-    super(props);
+  // use when needing to set initial state of component
+  constructor (props) {
+    super(props)
     this.state = {
       selectedLanguage: 'All',
       repos: null
-    };
+    }
     // makes the this keyword inside updateLanguage, is always the context of updatelanguage and thus keep the context of the component itself, which has setState
-    this.updateLanguage = this.updateLanguage.bind(this);
+    this.updateLanguage = this.updateLanguage.bind(this)
   }
   componentDidMount () {
     this.updateLanguage(this.state.selectedLanguage)
   }
-  updateLanguage(lang) {
+  updateLanguage (lang) {
     this.setState(() => {
       return {
         selectedLanguage: lang,
@@ -74,15 +74,13 @@ class Popular extends React.Component {
       }
     })
     api.fetchPopularRepos(lang)
-    .then((repos) => {
-      this.setState(() => {
-        return {
-          repos: repos
-        }
+      .then((repos) => {
+        this.setState(() => ({
+          repos
+        }))
       })
-    })
   }
-  render() {
+  render () {
     return (
       <div>
         <SelectLanguage
@@ -90,8 +88,8 @@ class Popular extends React.Component {
           onSelect={this.updateLanguage}
         />
         {!this.state.repos
-        ? <p>loading...</p>
-        : <RepoGrid repos={this.state.repos} />}
+          ? <Loading />
+          : <RepoGrid repos={this.state.repos} />}
       </div>
     )
   }
