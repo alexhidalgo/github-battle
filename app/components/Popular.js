@@ -4,22 +4,24 @@ const api = require('../utils/api')
 const Loading = require('./Loading')
 
 function RepoGrid (props) {
+  const { repos } = props
   return (
     <ul className='popular-list'>
-      {props.repos.map(function (repo, index) {
+      {repos.map((repo, index) => {
+        const { name, owner, html_url, stargazers_count } = repo
         return (
-          <li key={repo.name} className='popular-item'>
+          <li key={name} className='popular-item'>
             <div className='popular-rank'>#{index + 1}</div>
             <ul className='space-list-items'>
               <li>
                 <img
                   className='avatar'
-                  src={repo.owner.avatar_url}
-                  alt={'Avatar for ' + repo.owner.login} />
+                  src={owner.avatar_url}
+                  alt={'Avatar for ' + owner.login} />
               </li>
-              <li><a href={repo.html_url}>{repo.name}</a></li>
-              <li>@{repo.owner.login}</li>
-              <li>{repo.stargazers_count} stars</li>
+              <li><a href={html_url}>{name}</a></li>
+              <li>@{owner.login}</li>
+              <li>{stargazers_count} stars</li>
             </ul>
           </li>
         )
@@ -34,15 +36,15 @@ RepoGrid.propTypes = {
 
 // if all your component has is a render method on the react extends class then you can break that out into a function that just returns UI
 // this is a stateless functional component
-function SelectLanguage (props) {
+function SelectLanguage ({ onSelect, selectedLanguage }) {
   var languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python']
   return (
     <ul className='languages'>
       {languages.map((lang) => {
         return (
           <li
-            onClick={props.onSelect.bind(null, lang)}
-            style={lang === props.selectedLanguage ? {color: '#d0021b'} : null}
+            onClick={() => onSelect(lang)}
+            style={lang === selectedLanguage ? {color: '#d0021b'} : null}
             key={lang}>
             {lang}
           </li>
