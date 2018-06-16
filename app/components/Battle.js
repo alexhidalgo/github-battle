@@ -4,14 +4,22 @@ import { Link } from 'react-router-dom'
 import PlayerPreview from './PlayerPreview'
 
 class PlayerInput extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { username: '' }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func.isRequired
+  }
+  static defaultProps = {
+    label: 'Username'
+  }
+  state = {
+    username: ''
   }
 
-  handleSubmit (event) {
+  // Class properties syntax using bable plugin
+  // Allows you to forego the 'bind(this)' syntax
+  // Don't need to worry about binding or use a constructor anymore
+  handleSubmit = (event) => {
     // prevents default behavior of submitting to server
     event.preventDefault()
 
@@ -20,7 +28,7 @@ class PlayerInput extends React.Component {
       this.state.username
     )
   }
-  handleChange (event) {
+  handleChange = (event) => {
     const value = event.target.value
     this.setState(() => ({ username: value }))
   }
@@ -55,34 +63,29 @@ class PlayerInput extends React.Component {
   }
 }
 
-PlayerInput.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired
-}
 
 class Battle extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      playerOneName: '',
-      playerTwoName: '',
-      playerOneImage: null,
-      playerTwoImage: null
-    }
+  state = {
+    playerOneName: '',
+    playerTwoName: '',
+    playerOneImage: null,
+    playerTwoImage: null
+  }
+  static propTypes = {
+    
+  }
+  static defaultProps = {
 
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleReset = this.handleReset.bind(this)
   }
 
-  handleSubmit (id, username) {
+  handleSubmit = (id, username) => {
     this.setState(() => ({
       [id + 'Name']: username,
       [id + 'Image']: `https://github.com/${username}.png?size=200`
     }))
   }
 
-  handleReset (id) {
+  handleReset = (id) => {
     this.setState(() => ({
       [id + 'Name']: '',
       [id + 'Image']: null
