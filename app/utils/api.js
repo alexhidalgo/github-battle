@@ -1,4 +1,4 @@
-const axios = require('axios')
+import axios from 'axios'
 const id = 'clientID'
 const sec = 'secrediDA'
 const params = `?client_id=${id}&client_secret=${sec}`
@@ -49,16 +49,14 @@ function sortPlayers (players) {
   )
 }
 
-module.exports = {
+export function battle (players) {
+  return Promise.all(players.map(getUserData))
+    .then(sortPlayers)
+    .catch(handleError)
+}
 
-  battle: (players) => {
-    return Promise.all(players.map(getUserData))
-      .then(sortPlayers)
-      .catch(handleError)
-  },
-  fetchPopularRepos: (language = 'all') => {
-    const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
+export function fetchPopularRepos (language = 'all') {
+  const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
 
-    return axios.get(encodedURI).then(({ data }) => data.items)
-  }
+  return axios.get(encodedURI).then(({ data }) => data.items)
 }

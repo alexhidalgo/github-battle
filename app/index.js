@@ -1,14 +1,13 @@
-let React = require('react');
-let ReactDOM = require('react-dom');
-//let PropTypes = require('prop-types')
-require ('./index.css');
-let App = require('./components/App'); 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './components/App'
 
 // state
 // lifecycle event
 // UI
 
 ReactDOM.render(
-    <App />,
-    document.getElementById('app')
-);
+  <App />,
+  document.getElementById('app')
+)
