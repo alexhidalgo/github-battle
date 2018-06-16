@@ -13,17 +13,31 @@ const params = `?client_id=${id}&client_secret=${sec}`
 // NOTHING shorthand method names
 // NOTHING computed property names
 
-function getProfile (username) {
-  return axios.get(`https://api.github.com/users/${username}${params}`)
-    .then(({ data }) => data)
+async function getProfile (username) {
+  try {
+    const results = await axios.get(`https://api.github.com/users/${username}${params}`)
+    return results.data
+  } catch (error) {
+    console.error(error)
+  }
 }
 
-function getRepos (username) {
-  return axios.get(`https://api.github.com/users/${username}/repos${params}&per_page=100`)
+async function getRepos (username) {
+  try {
+    const results = axios.get(`https://api.github.com/users/${username}/repos${params}&per_page=100`)
+    return results
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function getStarCount (repos) {
-  return repos.data.reduce((count, { stargazers_count }) => (count + stargazers_count), 0)
+  try {
+    const results = repos.data.reduce((count, { stargazers_count }) => (count + stargazers_count), 0)
+    return results
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 function calculateScore ({ followers }, repos) {
