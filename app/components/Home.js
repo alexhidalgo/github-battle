@@ -6,7 +6,6 @@ function Home () {
     <div className='home-container'>
       <h1>
         Github Battle</h1>
-
       <Link className='button' to='/battle'>
         Battle
       </Link>
