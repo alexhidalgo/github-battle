@@ -71,12 +71,6 @@ class Battle extends React.Component {
     playerOneImage: null,
     playerTwoImage: null
   }
-  static propTypes = {
-    
-  }
-  static defaultProps = {
-
-  }
 
   handleSubmit = (id, username) => {
     this.setState(() => ({

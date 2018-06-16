@@ -53,20 +53,14 @@ function SelectLanguage ({ onSelect, selectedLanguage }) {
 }
 
 class Popular extends React.Component {
-  // use when needing to set initial state of component
-  constructor (props) {
-    super(props)
-    this.state = {
-      selectedLanguage: 'All',
-      repos: null
-    }
-    // makes the this keyword inside updateLanguage, is always the context of updatelanguage and thus keep the context of the component itself, which has setState
-    this.updateLanguage = this.updateLanguage.bind(this)
+  state = {
+    selectedLanguage: 'All',
+    repos: null
   }
   componentDidMount () {
     this.updateLanguage(this.state.selectedLanguage)
   }
-  updateLanguage (lang) {
+  updateLanguage = (lang) => {
     this.setState(() => {
       return {
         selectedLanguage: lang,
