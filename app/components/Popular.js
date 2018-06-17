@@ -1,25 +1,25 @@
-const React = require('react')
-const PropTypes = require('prop-types')
-const api = require('../utils/api')
-const Loading = require('./Loading')
+import React from 'react'
+import PropTypes from 'prop-types'
+import { fetchPopularRepos } from '../utils/api'
+import Loading from './Loading'
 
-function RepoGrid (props) {
+function RepoGrid ({ repos }) {
   return (
     <ul className='popular-list'>
-      {props.repos.map(function (repo, index) {
+      {repos.map(({name, owner, html_url, stargazers_count}, index) => {
         return (
-          <li key={repo.name} className='popular-item'>
+          <li key={name} className='popular-item'>
             <div className='popular-rank'>#{index + 1}</div>
             <ul className='space-list-items'>
               <li>
                 <img
                   className='avatar'
-                  src={repo.owner.avatar_url}
-                  alt={'Avatar for ' + repo.owner.login} />
+                  src={owner.avatar_url}
+                  alt={'Avatar for ' + owner.login} />
               </li>
-              <li><a href={repo.html_url}>{repo.name}</a></li>
-              <li>@{repo.owner.login}</li>
-              <li>{repo.stargazers_count} stars</li>
+              <li><a href={html_url}>{name}</a></li>
+              <li>@{owner.login}</li>
+              <li>{stargazers_count} stars</li>
             </ul>
           </li>
         )
@@ -34,15 +34,15 @@ RepoGrid.propTypes = {
 
 // if all your component has is a render method on the react extends class then you can break that out into a function that just returns UI
 // this is a stateless functional component
-function SelectLanguage (props) {
+function SelectLanguage ({ onSelect, selectedLanguage }) {
   var languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python']
   return (
     <ul className='languages'>
       {languages.map((lang) => {
         return (
           <li
-            onClick={props.onSelect.bind(null, lang)}
-            style={lang === props.selectedLanguage ? {color: '#d0021b'} : null}
+            onClick={() => onSelect(lang)}
+            style={lang === selectedLanguage ? {color: '#d0021b'} : null}
             key={lang}>
             {lang}
           </li>
@@ -53,43 +53,34 @@ function SelectLanguage (props) {
 }
 
 class Popular extends React.Component {
-  // use when needing to set initial state of component
-  constructor (props) {
-    super(props)
-    this.state = {
-      selectedLanguage: 'All',
-      repos: null
-    }
-    // makes the this keyword inside updateLanguage, is always the context of updatelanguage and thus keep the context of the component itself, which has setState
-    this.updateLanguage = this.updateLanguage.bind(this)
+  state = {
+    selectedLanguage: 'All',
+    repos: null
   }
   componentDidMount () {
     this.updateLanguage(this.state.selectedLanguage)
   }
-  updateLanguage (lang) {
+  updateLanguage = async (lang) => {
     this.setState(() => {
       return {
         selectedLanguage: lang,
         repos: null
       }
     })
-    api.fetchPopularRepos(lang)
-      .then((repos) => {
-        this.setState(() => ({
-          repos
-        }))
-      })
+    const repos = await fetchPopularRepos(lang)
+    this.setState(() => ({ repos }))
   }
   render () {
+    const { selectedLanguage, repos } = this.state
     return (
       <div>
         <SelectLanguage
-          selectedLanguage={this.state.selectedLanguage}
+          selectedLanguage={selectedLanguage}
           onSelect={this.updateLanguage}
         />
         {!this.state.repos
           ? <Loading />
-          : <RepoGrid repos={this.state.repos} />}
+          : <RepoGrid repos={repos} />}
       </div>
     )
   }
@@ -104,4 +95,4 @@ SelectLanguage.propTypes = {
   onSelect: PropTypes.func.isRequired
 }
 
-module.exports = Popular
+export default Popular

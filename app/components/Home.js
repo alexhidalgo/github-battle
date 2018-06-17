@@ -1,17 +1,16 @@
-let React = require('react')
-let Link = require('react-router-dom').Link
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Home () {
-    return (
-      <div className='home-container'>
-        <h1>
-          Github Battle</h1>
+  return (
+    <div className='home-container'>
+      <h1>
+        Github Battle</h1>
+      <Link className='button' to='/battle'>
+        Battle
+      </Link>
+    </div>
+  )
+}
 
-        <Link className='button' to='/battle'>
-          Battle
-        </Link>
-      </div>
-    )
-  }
-
-module.exports = Home
+export default Home

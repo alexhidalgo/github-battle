@@ -7,7 +7,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 let config = {
   // include es6 Promise bc they don't come native with babel-loader
-  entry: ['babel-polyfill', './app/index.js'],
+  entry: ['babel-polyfill', 'whatwg-fetch', './app/index.js'],
   output: {
     path: Path.resolve(__dirname, 'dist'),
     filename: 'index_bundle.js',
