@@ -1,4 +1,3 @@
-import axios from 'axios'
 const id = 'clientID'
 const sec = 'secrediDA'
 const params = `?client_id=${id}&client_secret=${sec}`
@@ -14,17 +13,17 @@ const params = `?client_id=${id}&client_secret=${sec}`
 // NOTHING computed property names
 
 async function getProfile (username) {
-  const results = await axios.get(`https://api.github.com/users/${username}${params}`)
-  return results.data
+  const response = await fetch(`https://api.github.com/users/${username}${params}`)
+  return response.json()
 }
 
 async function getRepos (username) {
-  const results = axios.get(`https://api.github.com/users/${username}/repos${params}&per_page=100`)
-  return results
+  const response = await fetch(`https://api.github.com/users/${username}/repos${params}&per_page=100`)
+  return response.json()
 }
 
 function getStarCount (repos) {
-  return repos.data.reduce((count, { stargazers_count }) => (count + stargazers_count), 0)
+  return repos.reduce((count, { stargazers_count }) => (count + stargazers_count), 0)
 }
 
 function calculateScore ({ followers }, repos) {
@@ -61,7 +60,9 @@ export async function battle (players) {
 export async function fetchPopularRepos (language = 'all') {
   const encodedURI = window.encodeURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
 
-  const repos = await axios.get(encodedURI)
+  const response = await fetch(encodedURI)
     .catch(handleError)
-  return repos.data.items
+
+  const repos = await response.json()
+  return repos.items
 }
